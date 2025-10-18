@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>API Test Console</title>
+  <style>
+    body { font-family: Arial; margin: 20px; }
+    textarea, input { width: 100%; margin-top: 5px; }
+    button { margin-top: 10px; padding: 6px 12px; }
+    pre { background: #f2f2f2; padding: 10px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Project 1 – REST API Tester</h1>
+
+  <label>Endpoint URL:</label>
+  <input id="url" value="http://localhost/users">
+
+  <label>HTTP Method:</label>
+  <select id="method">
+    <option>GET</option>
+    <option>POST</option>
+    <option>PUT</option>
+    <option>DELETE</option>
+  </select>
+
+  <label>Request Body (JSON):</label>
+  <textarea id="body" rows="5">{}</textarea>
+
+  <button onclick="sendRequest()">Send Request</button>
+
+  <h3>Response:</h3>
+  <pre id="output"></pre>
+
+  <script>
+    async function sendRequest() {
+      const url = document.getElementById('url').value;
+      const method = document.getElementById('method').value;
+      const bodyText = document.getElementById('body').value.trim();
+      let options = { method, headers: { 'Content-Type': 'application/json' } };
+      if (method !== 'GET' && method !== 'DELETE') {
+        options.body = bodyText;
+      }
+      try {
+        const res = await fetch(url, options);
+        const text = await res.text();
+        document.getElementById('output').textContent = text;
+      } catch (err) {
+        document.getElementById('output').textContent = 'Error: ' + err;
+      }
+    }
+  </script>
+</body>
+</html>
